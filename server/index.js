@@ -1,6 +1,8 @@
 const express = require("express");
 const next = require("next");
 const { ApolloServer, gql } = require("apollo-server-express");
+const cors = require("cors");
+const parser = require("body-parser");
 const schema = require("./schema");
 const resolvers = require("./resolvers");
 
@@ -10,15 +12,20 @@ const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler();
 
 nextApp.prepare().then(() => {
-  const server = express();
-  const apolloApp = new ApolloServer({ typeDefs: schema, resolvers });
-  apolloApp.applyMiddleware({ app: server, path: "/graphql" });
+  const app = express();
+  app.use(parser.urlencoded({ extended: true }));
+  app.use(parser.json());
+  app.set("port", port);
 
-  server.get("*", (req, res) => {
+  app.use(cors());
+  const apolloApp = new ApolloServer({ typeDefs: schema, resolvers });
+  apolloApp.applyMiddleware({ app, path: "/graphql" });
+
+  app.get("*", (req, res) => {
     return handle(req, res);
   });
 
-  server.listen({ port: 4000 }, () =>
+  app.listen({ port: 4000 }, () =>
     console.log(`🚀 Server ready at http://localhost:4000/graphql`)
   );
 });
