@@ -1,6 +1,7 @@
 const express = require("express");
 const next = require("next");
 const { ApolloServer, gql } = require("apollo-server-express");
+const Knex = require("knex");
 const { Model } = require("objection");
 const cors = require("cors");
 const morgan = require("morgan");

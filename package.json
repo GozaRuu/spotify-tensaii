@@ -20,7 +20,7 @@
     "React"
   ],
   "scripts": {
-    "migrate": "knex migrate:latest",
+    "migrate": "cd server && knex migrate:latest && cd ..",
     "dev": "yarn migrate && nodemon server",
     "build": "next build",
     "start": "NODE_ENV=production node server.js"
@@ -45,6 +45,7 @@
   "devDependencies": {
     "morgan": "^1.9.1",
     "nodemon": "^1.18.9",
-    "prettier": "^1.15.3"
+    "prettier": "^1.15.3",
+    "sqlite3": "^4.0.4"
   }
 }
