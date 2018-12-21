@@ -20,7 +20,8 @@
     "React"
   ],
   "scripts": {
-    "dev": "nodemon server",
+    "migrate": "knex migrate:latest",
+    "dev": "yarn migrate && nodemon server",
     "build": "next build",
     "start": "NODE_ENV=production node server.js"
   },
@@ -42,6 +43,7 @@
     "url": "https://github.com/GozaRuu/spotify-tensaii/issues"
   },
   "devDependencies": {
+    "morgan": "^1.9.1",
     "nodemon": "^1.18.9",
     "prettier": "^1.15.3"
   }
