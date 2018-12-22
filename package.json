@@ -21,6 +21,7 @@
   ],
   "scripts": {
     "migrate": "cd server && knex migrate:latest && cd ..",
+    "seed": "cd server && knex migrate:rollback && knex migrate:latest && knex seed:run && cd ..",
     "dev": "yarn migrate && nodemon server",
     "build": "next build",
     "start": "NODE_ENV=production node server.js"
