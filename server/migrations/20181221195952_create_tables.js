@@ -1,15 +1,21 @@
 exports.up = knex => {
   return knex.schema
     .createTable("users", table => {
-      table.increments("id").primary();
+      table
+        .increments("id")
+        .primary()
+        .unique();
       table.string("username");
       table.string("password");
     })
     .createTable("albums", table => {
-      table.increments("id").primary();
+      table
+        .increments("id")
+        .primary()
+        .unique();
       table.string("name");
       table.string("artist");
-      table.string("link");
+      table.string("link").unique();
     })
     .createTable("users_albums", table => {
       table.increments("id").primary();
