@@ -7,7 +7,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const parser = require("body-parser");
 const knexConfig = require("../database/knexfile");
-const schema = require("./schema");
+const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
 
 require("dotenv").config();
@@ -33,8 +33,14 @@ nextApp.prepare().then(() => {
   app.set("json spaces", 2);
   app.set("port", port);
 
+  // set up any dataSources our resolvers need
+  const dataSources = () => ({
+    launchAPI: new LaunchAPI(),
+    userAPI: new UserAPI({ store })
+  });
+
   //Initialize intialze and connect a graphql endpoint to express
-  const apolloApp = new ApolloServer({ typeDefs: schema, resolvers });
+  const apolloApp = new ApolloServer({ typeDefs, resolvers, dataSources });
   apolloApp.applyMiddleware({ app, path: "/graphql" });
 
   //redirect every query to the next app
