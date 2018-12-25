@@ -6,7 +6,7 @@ const { Model } = require("objection");
 const cors = require("cors");
 const morgan = require("morgan");
 const parser = require("body-parser");
-const knexConfig = require("./knexfile");
+const knexConfig = require("../database/knexfile");
 const schema = require("./schema");
 const resolvers = require("./resolvers");
 
