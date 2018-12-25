@@ -6,9 +6,14 @@ const { Model } = require("objection");
 const cors = require("cors");
 const morgan = require("morgan");
 const parser = require("body-parser");
+
 const knexConfig = require("../database/knexfile");
+const { User, Album } = require("../database");
+
 const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
+const AlbumAPI = require("./datasources/album");
+const UserAPI = require("./datasources/user");
 
 require("dotenv").config();
 
@@ -33,9 +38,12 @@ nextApp.prepare().then(() => {
   app.set("json spaces", 2);
   app.set("port", port);
 
+  //create store
+  const store = { User, Album };
+
   // set up any dataSources our resolvers need
   const dataSources = () => ({
-    launchAPI: new LaunchAPI(),
+    albumAPI: new AlbumAPI({ store }),
     userAPI: new UserAPI({ store })
   });
 
