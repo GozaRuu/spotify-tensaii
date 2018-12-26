@@ -16,6 +16,7 @@ const AlbumAPI = require("./datasources/album");
 const UserAPI = require("./datasources/user");
 
 require("dotenv").config();
+require("./passport.config");
 
 // Initialize knex and objection DB connection.
 const knex = Knex(knexConfig.development);
