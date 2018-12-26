@@ -1,7 +1,7 @@
 const Model = require("objection").Model;
+import bcrypt from "bcrypt";
 
 class User extends Model {
-  // Table name is required.
   static get tableName() {
     return "users";
   }
@@ -14,7 +14,8 @@ class User extends Model {
         id: { type: "integer" },
         email: { type: "string", minLength: 5, maxLength: 255 },
         username: { type: "string", minLength: 3, maxLength: 255 },
-        password: { type: "string", minLength: 6, maxLength: 18 }
+        hash: { type: "string" },
+        isAdmin: { type: "boolean", default: false }
       }
     };
   }
@@ -26,7 +27,6 @@ class User extends Model {
         modelClass: __dirname + "/Album",
         join: {
           from: "users.id",
-          // ManyToMany relation needs the `through` object to describe the join table.
           through: {
             from: "users_albums.userId",
             to: "users_albums.albumId"
@@ -35,6 +35,14 @@ class User extends Model {
         }
       }
     };
+  }
+
+  set password(password) {
+    this.hash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+  }
+
+  verifyPassword(password, callback) {
+    bcrypt.compare(password, this.hash, callback);
   }
 }
 

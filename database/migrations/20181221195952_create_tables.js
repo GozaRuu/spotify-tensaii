@@ -7,7 +7,8 @@ exports.up = knex => {
         .unique();
       table.string("email").unique();
       table.string("username");
-      table.string("password");
+      table.string("hash");
+      table.boolean("isAdmin");
     })
     .createTable("albums", table => {
       table
