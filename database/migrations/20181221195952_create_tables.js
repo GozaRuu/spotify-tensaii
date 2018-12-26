@@ -5,6 +5,7 @@ exports.up = knex => {
         .increments("id")
         .primary()
         .unique();
+      table.string("email").unique();
       table.string("username");
       table.string("password");
     })
