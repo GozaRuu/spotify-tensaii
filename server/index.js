@@ -17,7 +17,7 @@ const AlbumAPI = require("./datasources/album");
 const UserAPI = require("./datasources/user");
 
 require("dotenv").config();
-require("./passport.config");
+const { getToken } = require("./passport.config");
 
 // Initialize knex and objection DB connection.
 const knex = Knex(knexConfig.development);
@@ -42,7 +42,6 @@ nextApp.prepare().then(() => {
 
   //config passport
   app.use(passport.initialize());
-  app.use(passport.session());
 
   //create store
   const store = { User, Album };

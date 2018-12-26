@@ -1,6 +1,12 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const JwtStrategy = require("passport-jwt").Strategy;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
 const { User } = require("../database");
+
+require("dotenv").config();
+
+const JWTSecret = process.env.JWTSecret || "123";
 
 passport.use(
   new LocalStrategy(
@@ -8,9 +14,9 @@ passport.use(
       usernameField: "email",
       passwordField: "password"
     },
-    (username, password, done) => {
+    (email, password, done) => {
       User.query()
-        .where("username", username)
+        .where("email", email)
         .first()
         .then(user => {
           if (!user) return done(null, false, { message: "Unknown user" });
@@ -28,13 +34,31 @@ passport.use(
   )
 );
 
+const opts = {};
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = JWTSecret;
+
+passport.use(
+  new JwtStrategy(opts, (jwt_payload, done) => {
+    User.query()
+      .findById(jwt_payload._id)
+      .then((err, user) => {
+        if (err) return done(err);
+        return user ? done(null, user) : done(null, false);
+      });
+  })
+);
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-  Admin.query()
+  User.query()
     .findById(id)
     .then(user => done(null, user))
     .catch(err => done(err));
 });
+
+exports.getToken = user =>
+  jwt.sign(user, JWTSecret, { expiresIn: 60 * 60 * 24 });
