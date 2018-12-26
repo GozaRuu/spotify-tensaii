@@ -3,6 +3,7 @@ const next = require("next");
 const { ApolloServer, gql } = require("apollo-server-express");
 const Knex = require("knex");
 const { Model } = require("objection");
+const passport = require("passport");
 const cors = require("cors");
 const morgan = require("morgan");
 const parser = require("body-parser");
@@ -38,6 +39,10 @@ nextApp.prepare().then(() => {
   app.use(cors());
   app.set("json spaces", 2);
   app.set("port", port);
+
+  //config passport
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   //create store
   const store = { User, Album };
