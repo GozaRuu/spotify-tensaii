@@ -11,13 +11,15 @@ const parser = require("body-parser");
 const knexConfig = require("../database/knexfile");
 const { User, Album } = require("../database");
 
+const authRouter = require("./auth-router");
+
 const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
 const AlbumAPI = require("./datasources/album");
 const UserAPI = require("./datasources/user");
 
 require("dotenv").config();
-const { getToken } = require("./passport.config");
+require("./passport.config");
 
 // Initialize knex and objection DB connection.
 const knex = Knex(knexConfig.development);
@@ -43,6 +45,9 @@ nextApp.prepare().then(() => {
   //config passport
   app.use(passport.initialize());
 
+  //setup auth Router
+  app.use("/auth", authRouter);
+
   //create store
   const store = { User, Album };
 
@@ -62,6 +67,6 @@ nextApp.prepare().then(() => {
   });
 
   app.listen(app.get("port"), () =>
-    console.log(`🚀 Server ready at http://localhost:4000/graphql`)
+    console.log(`🚀 Server ready at http://localhost:4000`)
   );
 });

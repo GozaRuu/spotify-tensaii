@@ -19,12 +19,12 @@ passport.use(
         .where("email", email)
         .first()
         .then(user => {
-          if (!user) return done(null, false, { message: "Unknown user" });
+          if (!user) return done(null, false, "Unknown User");
 
           user.verifyPassword(password, (err, passwordCorrect) => {
             if (err) throw err;
             if (!passwordCorrect) {
-              return done(null, false, { message: "Wrong Password" });
+              return done(null, false, "Wrong Password");
             }
             return done(null, user);
           });
@@ -59,6 +59,3 @@ passport.deserializeUser((id, done) => {
     .then(user => done(null, user))
     .catch(err => done(err));
 });
-
-exports.getToken = user =>
-  jwt.sign(user, JWTSecret, { expiresIn: 60 * 60 * 24 });

@@ -1,10 +1,12 @@
-exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
+const { Model } = require("objection");
+const { User } = require("..");
+
+exports.seed = knex => {
+  Model.knex(knex);
   return knex("users")
     .del()
-    .then(function() {
-      // Inserts seed entries
-      return knex("users").insert([
+    .then(async () => {
+      await User.query().insertGraph([
         { email: "kais1@g.com", username: "kais1", password: "kais1" },
         { email: "kais2@g.com", username: "kais2", password: "kais2" }
       ]);

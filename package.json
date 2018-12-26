@@ -20,8 +20,8 @@
     "React"
   ],
   "scripts": {
-    "migrate": "cd database && knex migrate:latest && cd ..",
-    "seed": "cd database && knex migrate:rollback && knex migrate:latest && knex seed:run && cd ..",
+    "migrate": "knex migrate:latest --cwd ./database",
+    "seed": "knex migrate:rollback --cwd ./database && knex migrate:latest --cwd ./database && knex seed:run --cwd ./database",
     "dev": "yarn migrate && nodemon server",
     "build": "next build",
     "start": "NODE_ENV=production node server.js"
