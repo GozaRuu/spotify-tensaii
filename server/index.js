@@ -90,7 +90,9 @@ nextApp.prepare().then(() => {
     return handle(req, res);
   });
 
-  app.listen(app.get("port"), () =>
-    console.log(`🚀 Server ready at http://localhost:4000`)
-  );
+  // Start server if we're not in a test env.
+  if (process.env.NODE_ENV !== "test")
+    app.listen(app.get("port"), () =>
+      console.log(`🚀 Server ready at http://localhost:4000`)
+    );
 });
