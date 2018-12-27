@@ -48,20 +48,44 @@ nextApp.prepare().then(() => {
   //setup auth Router
   app.use("/auth", authRouter);
 
+  //setup authenication for graphql
+  app.use("/graphql", (req, res, next) => {
+    passport.authenticate("jwt", function(user, _, err) {
+      if (err)
+        return res.json({
+          success: false,
+          message: "Wrong Access Token"
+        });
+
+      req.user = user;
+      return next();
+    })(req, res, next);
+  });
+
   //create store
   const store = { User, Album };
 
-  // set up any dataSources our resolvers need
+  // set up dataSources for the resolvers
   const dataSources = () => ({
     albumAPI: new AlbumAPI({ store }),
     userAPI: new UserAPI({ store })
   });
 
+  // set up shared context between resolvers
+  const context = async ({ req }) => {
+    return { user: req.user };
+  };
+
   //Initialize intialze and connect a graphql endpoint to express
-  const apolloApp = new ApolloServer({ typeDefs, resolvers, dataSources });
+  const apolloApp = new ApolloServer({
+    typeDefs,
+    resolvers,
+    dataSources,
+    context
+  });
   apolloApp.applyMiddleware({ app, path: "/graphql" });
 
-  //redirect every query to the next app
+  //redirect every GET query to the next app
   app.get("*", (req, res) => {
     return handle(req, res);
   });

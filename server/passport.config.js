@@ -41,7 +41,7 @@ opts.secretOrKey = JWTSecret;
 passport.use(
   new JwtStrategy(opts, (jwt_payload, done) => {
     User.query()
-      .findById(jwt_payload._id)
+      .findById(jwt_payload.id)
       .then((err, user) => {
         if (err) return done(err);
         return user ? done(null, user) : done(null, false);
