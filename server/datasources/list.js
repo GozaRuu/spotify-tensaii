@@ -1,6 +1,6 @@
 const { DataSource } = require("apollo-datasource");
 
-class AlbumAPI extends DataSource {
+class ListAPI extends DataSource {
   constructor({ store }) {
     super();
     this.store = store;
@@ -9,10 +9,6 @@ class AlbumAPI extends DataSource {
   initialize(config) {
     this.context = config.context;
   }
-
-  findOrCreateAlbum() {
-    return null;
-  }
 }
 
-module.exports = AlbumAPI;
+module.exports = ListAPI;

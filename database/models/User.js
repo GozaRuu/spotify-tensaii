@@ -22,16 +22,12 @@ class User extends Model {
 
   static get relationMappings() {
     return {
-      rates: {
-        relation: Model.ManyToManyRelation,
-        modelClass: __dirname + "/Album",
+      lists: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + "/AlbumList",
         join: {
           from: "users.id",
-          through: {
-            from: "users_albums.userId",
-            to: "users_albums.albumId"
-          },
-          to: "albums.id"
+          to: "album_lists.userId"
         }
       }
     };

@@ -10,16 +10,7 @@ exports.up = knex => {
       table.string("hash");
       table.boolean("isAdmin");
     })
-    .createTable("albums", table => {
-      table
-        .increments("id")
-        .primary()
-        .unique();
-      table.string("name");
-      table.string("artist");
-      table.string("link").unique();
-    })
-    .createTable("users_albums", table => {
+    .createTable("album_lists", table => {
       table.increments("id").primary();
       table
         .integer("userId")
@@ -27,13 +18,11 @@ exports.up = knex => {
         .references("id")
         .inTable("users")
         .onDelete("CASCADE");
+      table.string("AlbumSpotifyId");
       table
-        .integer("albumId")
+        .integer("rank")
         .unsigned()
-        .references("id")
-        .inTable("albums")
-        .onDelete("CASCADE");
-      table.integer("rank").unsigned();
+        .unique();
       table.text("description");
     });
 };

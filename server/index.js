@@ -9,13 +9,13 @@ const morgan = require("morgan");
 const parser = require("body-parser");
 
 const knexConfig = require("../database/knexfile");
-const { User, Album } = require("../database");
+const store = require("../database");
 
 const authRouter = require("./auth-router");
 
 const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
-const AlbumAPI = require("./datasources/album");
+const ListAPI = require("./datasources/list");
 const UserAPI = require("./datasources/user");
 
 require("dotenv").config();
@@ -62,12 +62,9 @@ nextApp.prepare().then(() => {
     })(req, res, next);
   });
 
-  //create store
-  const store = { User, Album };
-
   // set up dataSources for the resolvers
   const dataSources = () => ({
-    albumAPI: new AlbumAPI({ store }),
+    listAPI: new ListAPI({ store }),
     userAPI: new UserAPI({ store })
   });
 
