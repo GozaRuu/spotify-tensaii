@@ -5,13 +5,8 @@ class UserAPI extends DataSource {
     super();
     this.store = store;
   }
-
   initialize(config) {
     this.context = config.context;
-  }
-
-  findOrCreateUser() {
-    return null;
   }
 }
 

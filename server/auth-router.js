@@ -1,6 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
+const { User } = require("../database");
 
 require("dotenv").config();
 const JWTSecret = process.env.JWTSecret || "123";
@@ -33,6 +34,25 @@ router.post("/login", (req, res, next) => {
       }
     }
   )(req, res, next);
+});
+
+router.post("/signup", async (req, res, next) => {
+  res.setHeader("Content-Type", "application/json");
+  const user = await User.query()
+    .insertGraph(req.body)
+    .then(res => {
+      res.status(200).json({
+        success: true,
+        status: "Sign Up Successful",
+        info: user
+      });
+    })
+    .catch(err => {
+      res.status(404).json({
+        success: false,
+        status: "Sign Up failed"
+      });
+    });
 });
 
 module.exports = router;
