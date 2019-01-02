@@ -1,13 +1,19 @@
-const { DataSource } = require("apollo-datasource");
+const { RESTDataSource } = require("apollo-datasource-rest");
 
-class ListAPI extends DataSource {
-  constructor({ store }) {
+class ListAPI extends RESTDataSource {
+  constructor() {
     super();
-    this.store = store;
+    this.baseURL = "https://api.spotify.com/v1";
   }
 
-  initialize(config) {
-    this.context = config.context;
+  willSendRequest(req) {
+    req.headers.set("Authorization", "Bearer " + this.context.token);
+    console.log(req);
+  }
+
+  async getAlbumById({ albumSpotifyId }) {
+    const res = await this.get(`albums/${albumSpotifyId}`);
+    console.log(res);
   }
 }
 

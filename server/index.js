@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const next = require("next");
 const { ApolloServer, gql } = require("apollo-server-express");
@@ -7,6 +9,8 @@ const passport = require("passport");
 const cors = require("cors");
 const morgan = require("morgan");
 const parser = require("body-parser");
+
+const axios = require("axios");
 
 const knexConfig = require("../database/knexfile");
 const store = require("../database");
@@ -18,7 +22,6 @@ const resolvers = require("./resolvers");
 const ListAPI = require("./datasources/list");
 const UserAPI = require("./datasources/user");
 
-require("dotenv").config();
 require("./passport.config");
 
 // Initialize knex and objection DB connection.
@@ -27,6 +30,8 @@ Model.knex(knex);
 
 const port = parseInt(process.env.PORT, 10) || 4000;
 const dev = process.env.NODE_ENV !== "production";
+const spotifyClientId = process.env.SPOTIFY_API_CLIENT_ID || "";
+const spotifyClientSecret = process.env.SPOTIFY_API_CLIENT_SECRET || "";
 
 //get next app instance
 const nextApp = next({ dev });
@@ -64,14 +69,39 @@ nextApp.prepare().then(() => {
 
   // set up dataSources for the resolvers
   const dataSources = () => ({
-    listAPI: new ListAPI({ store }),
+    listAPI: new ListAPI(),
     userAPI: new UserAPI({ store })
   });
 
   // set up shared context between resolvers
   const context = async ({ req }) => {
-    return { user: req.user };
+    const token = await axios({
+      method: "post",
+      url: "https://accounts.spotify.com/api/token",
+      params: {
+        grant_type: "client_credentials"
+      },
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization:
+          "Basic " +
+          new Buffer.from(spotifyClientId + ":" + spotifyClientSecret).toString(
+            "base64"
+          )
+      }
+    });
+    return { user: req.user, token: token.data.access_token };
   };
+
+  //testing the api
+  //TODO: add a jest testing file for the api
+  // const ok = new ListAPI();
+  // context({ req: { user: null } }).then(res => {
+  //   ok.initialize({ context: res });
+  //   ok.getAlbumById({
+  //     albumSpotifyId: "66at85wgO2pu5CccvqUF6i"
+  //   });
+  // });
 
   //Initialize intialze and connect a graphql endpoint to express
   const apolloApp = new ApolloServer({
