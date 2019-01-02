@@ -25,7 +25,8 @@
     "seed": "knex migrate:rollback --cwd ./database && knex migrate:latest --cwd ./database && knex seed:run --cwd ./database",
     "dev": "yarn migrate && nodemon server",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production node server.js",
+    "test": "jest"
   },
   "dependencies": {
     "apollo-datasource": "^0.2.1",

@@ -95,15 +95,15 @@ nextApp.prepare().then(() => {
 
   //testing the api
   //TODO: add a jest testing file for the api
-  // const ok = new ListAPI();
-  // context({ req: { user: null } }).then(res => {
-  //   ok.initialize({ context: res });
-  //   const album = ok
-  //     .getAlbumsByIds({
-  //       albumSpotifyIds: ["66at85wgO2pu5CccvqUF6i", "2OnNdRdzqs0Xe6VU2uGdPe"]
-  //     })
-  //     .then(res => console.log(res));
-  // });
+  const ok = new ListAPI();
+  context({ req: { user: null } }).then(res => {
+    ok.initialize({ context: res });
+    const album = ok
+      .getAlbumsByIds({
+        ids: ["66at85wgO2pu5CccvqUF6i", "2OnNdRdzqs0Xe6VU2uGdPe"]
+      })
+      .then(res => console.log(JSON.stringify(res, null, 2)));
+  });
 
   //Initialize intialze and connect a graphql endpoint to express
   const apolloApp = new ApolloServer({
