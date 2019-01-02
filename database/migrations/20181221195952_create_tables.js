@@ -30,6 +30,5 @@ exports.up = knex => {
 exports.down = knex => {
   return knex.schema
     .dropTableIfExists("users_albums")
-    .dropTableIfExists("albums")
     .dropTableIfExists("users");
 };

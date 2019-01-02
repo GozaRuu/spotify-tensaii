@@ -54,18 +54,18 @@ nextApp.prepare().then(() => {
   app.use("/auth", authRouter);
 
   //setup authenication for graphql
-  // app.use("/graphql", (req, res, next) => {
-  //   passport.authenticate("jwt", function(user, _, err) {
-  //     if (err)
-  //       return res.json({
-  //         success: false,
-  //         message: "Wrong Access Token"
-  //       });
-  //
-  //     req.user = user;
-  //     return next();
-  //   })(req, res, next);
-  // });
+  app.use("/graphql", (req, res, next) => {
+    passport.authenticate("jwt", function(user, _, err) {
+      if (err)
+        return res.json({
+          success: false,
+          message: "Wrong Access Token"
+        });
+
+      req.user = user;
+      return next();
+    })(req, res, next);
+  });
 
   // set up dataSources for the resolvers
   const dataSources = () => ({
@@ -93,19 +93,7 @@ nextApp.prepare().then(() => {
     return { user: req.user, token: token.data.access_token };
   };
 
-  //testing the api
-  //TODO: add a jest testing file for the api
-  const ok = new ListAPI();
-  context({ req: { user: null } }).then(res => {
-    ok.initialize({ context: res });
-    const album = ok
-      .getAlbumsByIds({
-        ids: ["66at85wgO2pu5CccvqUF6i", "2OnNdRdzqs0Xe6VU2uGdPe"]
-      })
-      .then(res => console.log(JSON.stringify(res, null, 2)));
-  });
-
-  //Initialize intialze and connect a graphql endpoint to express
+  //Initialize and connect a graphql endpoint to express
   const apolloApp = new ApolloServer({
     typeDefs,
     resolvers,
@@ -123,7 +111,7 @@ nextApp.prepare().then(() => {
   if (process.env.NODE_ENV !== "test")
     app.listen(app.get("port"), () =>
       console.log(
-        `🚀 Server ready at http://localhost:4000 and GraphQL ready on /graphql`
+        `🚀 Server ready at http://localhost:4000, gql playground on /graphql`
       )
     );
 });
