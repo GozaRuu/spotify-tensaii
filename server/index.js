@@ -98,9 +98,11 @@ nextApp.prepare().then(() => {
   // const ok = new ListAPI();
   // context({ req: { user: null } }).then(res => {
   //   ok.initialize({ context: res });
-  //   ok.getAlbumById({
-  //     albumSpotifyId: "66at85wgO2pu5CccvqUF6i"
-  //   });
+  //   const album = ok
+  //     .getAlbumsByIds({
+  //       albumSpotifyIds: ["66at85wgO2pu5CccvqUF6i", "2OnNdRdzqs0Xe6VU2uGdPe"]
+  //     })
+  //     .then(res => console.log(res));
   // });
 
   //Initialize intialze and connect a graphql endpoint to express
