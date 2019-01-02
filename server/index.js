@@ -54,18 +54,18 @@ nextApp.prepare().then(() => {
   app.use("/auth", authRouter);
 
   //setup authenication for graphql
-  app.use("/graphql", (req, res, next) => {
-    passport.authenticate("jwt", function(user, _, err) {
-      if (err)
-        return res.json({
-          success: false,
-          message: "Wrong Access Token"
-        });
-
-      req.user = user;
-      return next();
-    })(req, res, next);
-  });
+  // app.use("/graphql", (req, res, next) => {
+  //   passport.authenticate("jwt", function(user, _, err) {
+  //     if (err)
+  //       return res.json({
+  //         success: false,
+  //         message: "Wrong Access Token"
+  //       });
+  //
+  //     req.user = user;
+  //     return next();
+  //   })(req, res, next);
+  // });
 
   // set up dataSources for the resolvers
   const dataSources = () => ({
@@ -122,6 +122,8 @@ nextApp.prepare().then(() => {
   // Start server if we're not in a test env.
   if (process.env.NODE_ENV !== "test")
     app.listen(app.get("port"), () =>
-      console.log(`🚀 Server ready at http://localhost:4000`)
+      console.log(
+        `🚀 Server ready at http://localhost:4000 and GraphQL ready on /graphql`
+      )
     );
 });

@@ -25,13 +25,13 @@ class ListAPI extends RESTDataSource {
     };
   }
 
-  async getAlbumById({ albumSpotifyId }) {
-    const res = await this.get(`albums/${albumSpotifyId}`);
+  async getAlbumById({ id }) {
+    const res = await this.get(`albums/${id}`);
     return this.albumReducer(res);
   }
 
-  async getAlbumsByIds({ albumSpotifyIds }) {
-    const res = await this.get(`albums`, { ids: albumSpotifyIds });
+  async getAlbumsByIds({ ids }) {
+    const res = await this.get(`albums`, { ids: ids });
     return res.albums.map(album => this.albumReducer(album));
   }
 }
