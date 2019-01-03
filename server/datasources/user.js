@@ -37,8 +37,16 @@ class UserAPI extends DataSource {
     }
   }
 
-  async getListByUserId(id) {
+  async getListByUserId() {
     const userId = this.context.user.id;
+    try {
+      const data = await this.store.AlbumList.query()
+        .where("userId", userId)
+        .orderBy("rank");
+      return { success: true, data };
+    } catch (err) {
+      return { success: false, status: "database error", err };
+    }
   }
 }
 
