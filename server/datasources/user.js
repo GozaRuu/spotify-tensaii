@@ -16,36 +16,40 @@ class UserAPI extends DataSource {
         userId,
         ...listItem
       });
-      return { success: true, data };
+      return {
+        success: true,
+        message: "item inserted successfully",
+        list: [data]
+      };
     } catch (err) {
-      return { success: false, status: "wrong data", err };
+      return { success: false, message: "wrong data input" };
     }
   }
 
   async addListItemsByUserId(listItems) {
     const userId = this.context.user.id;
     try {
-      const data = await this.store.AlbumList.query().insertGraph(
+      const list = await this.store.AlbumList.query().insertGraph(
         listItems.map(listItem => ({
           userId,
           ...listItem
         }))
       );
-      return { success: true, data };
+      return { success: true, message: "items inserted successfully", list };
     } catch (err) {
-      return { success: false, status: "wrong data", err };
+      return { success: false, message: "wrong data input" };
     }
   }
 
   async getListByUserId() {
     const userId = this.context.user.id;
     try {
-      const data = await this.store.AlbumList.query()
+      const list = await this.store.AlbumList.query()
         .where("userId", userId)
         .orderBy("rank");
-      return { success: true, data };
+      return { success: true, list };
     } catch (err) {
-      return { success: false, status: "database error", err };
+      return { success: false, message: "database error" };
     }
   }
 }
