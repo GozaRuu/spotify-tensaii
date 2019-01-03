@@ -4,7 +4,7 @@ const queries = {
     dataSources.listAPI.getAlbumById({ id }),
   albums: (_, { ids }, { dataSources }) =>
     dataSources.listAPI.getAlbumsByIds({ ids }),
-  list: (_, __, { dataSources }) => dataSources.userId.getListByUserId()
+  list: (_, __, { dataSources }) => dataSources.userAPI.getListByUserId()
 };
 
 module.exports = queries;

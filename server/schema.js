@@ -21,7 +21,7 @@ const typeDefs = gql`
   type ListResponse {
     success: Boolean!
     message: String
-    List: [ListItem]
+    list: [ListItem]
   }
 
   type ListItem {
