@@ -22,7 +22,8 @@
   ],
   "scripts": {
     "migrate": "knex migrate:latest --cwd ./database",
-    "seed": "knex migrate:rollback --cwd ./database && knex migrate:latest --cwd ./database && knex seed:run --cwd ./database",
+    "rollback": "knex migrate:rollback --cwd ./database",
+    "seed": "yarn rollback && yarn migrate && knex seed:run --cwd ./database",
     "dev": "yarn migrate && nodemon server",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
