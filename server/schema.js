@@ -4,7 +4,31 @@ const typeDefs = gql`
   type Query {
     albums(ids: [ID]!): [Album]
     album(id: ID!): Album
-    hello: String
+    list: ListResponse
+  }
+
+  type Mutation {
+    addListItem(listItem: ListItemInput): ListResponse
+    addListItems(listItems: [ListItemInput]!): ListResponse
+  }
+
+  input ListItemInput {
+    AlbumSpotifyId: String!
+    rank: Int
+    description: String
+  }
+
+  type ListResponse {
+    success: Boolean!
+    message: String
+    List: [ListItem]
+  }
+
+  type ListItem {
+    userId: ID!
+    AlbumSpotifyId: ID
+    rank: Int
+    description: String
   }
 
   type Album {
