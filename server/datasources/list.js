@@ -25,6 +25,15 @@ class ListAPI extends RESTDataSource {
     };
   }
 
+  artistReducer(artist) {
+    return {
+      id: artist.id || 0,
+      name: artist.name,
+      genres: artist.genres,
+      images: artist.images
+    };
+  }
+
   async getAlbumById({ id }) {
     const res = await this.get(`albums/${id}`);
     return this.albumReducer(res);
@@ -33,6 +42,16 @@ class ListAPI extends RESTDataSource {
   async getAlbumsByIds({ ids }) {
     const res = await this.get(`albums`, { ids: ids });
     return res.albums.map(album => this.albumReducer(album));
+  }
+
+  async getArtistById({ id }) {
+    const res = await this.get(`artists/${id}`);
+    return this.artistReducer(res);
+  }
+
+  async getArtistsById({ ids }) {
+    const res = await this.get(`artists`, { ids: ids });
+    return res.albums.map(artist => this.artistReducer(artist));
   }
 }
 

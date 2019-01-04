@@ -4,6 +4,8 @@ const typeDefs = gql`
   type Query {
     albums(ids: [ID]!): [Album]
     album(id: ID!): Album
+    artists(ids: [ID]!): [Artist]
+    artist(id: ID!): Artist
     list: ListResponse
   }
 
