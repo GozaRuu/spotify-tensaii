@@ -49,9 +49,9 @@ class ListAPI extends RESTDataSource {
     return this.artistReducer(res);
   }
 
-  async getArtistsById({ ids }) {
+  async getArtistsByIds({ ids }) {
     const res = await this.get(`artists`, { ids: ids });
-    return res.albums.map(artist => this.artistReducer(artist));
+    return res.artists.map(artist => this.artistReducer(artist));
   }
 }
 
