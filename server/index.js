@@ -19,8 +19,8 @@ const authRouter = require("./auth-router");
 
 const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
-const ListAPI = require("./datasources/list");
-const UserAPI = require("./datasources/user");
+const SpotifyAPI = require("./datasources/spotify");
+const DatabaseAPI = require("./datasources/database");
 
 require("./passport.config");
 
@@ -69,8 +69,8 @@ nextApp.prepare().then(() => {
 
   // set up dataSources for the resolvers
   const dataSources = () => ({
-    listAPI: new ListAPI(),
-    userAPI: new UserAPI({ store })
+    listAPI: new SpotifyAPI(),
+    userAPI: new DatabaseAPI({ store })
   });
 
   // set up shared context between resolvers

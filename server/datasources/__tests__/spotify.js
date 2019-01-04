@@ -1,19 +1,19 @@
-const ListAPI = require("../list");
+const SpotifyAPI = require("../spotify");
 
 const mocks = {
   get: jest.fn()
 };
 
-const ds = new ListAPI();
+const ds = new SpotifyAPI();
 ds.get = mocks.get;
 
-describe("[ListAPI.albumReducer]", () => {
+describe("[SpotifyAPI.albumReducer]", () => {
   it("properly transforms album", () => {
     expect(ds.albumReducer(mockOneAlbumResponse)).toEqual(mockOneAlbum);
   });
 });
 
-describe("[ListAPI.getAlbumById]", () => {
+describe("[SpotifyAPI.getAlbumById]", () => {
   it("should call /album/:id to look up single album from api", async () => {
     // if api response is list of raw albumes,
     // res should be single transformed album
@@ -25,7 +25,7 @@ describe("[ListAPI.getAlbumById]", () => {
   });
 });
 
-describe("[ListAPI.getAlbumsByIds]", () => {
+describe("[SpotifyAPI.getAlbumsByIds]", () => {
   it("should call /albums and get an array of albums", async () => {
     mocks.get.mockReturnValueOnce(mockTwoAlbumResponse);
 

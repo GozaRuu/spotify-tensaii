@@ -1,6 +1,6 @@
 const { DataSource } = require("apollo-datasource");
 
-class UserAPI extends DataSource {
+class DatabaseAPI extends DataSource {
   constructor({ store }) {
     super();
     this.store = store;
@@ -54,4 +54,4 @@ class UserAPI extends DataSource {
   }
 }
 
-module.exports = UserAPI;
+module.exports = DatabaseAPI;
