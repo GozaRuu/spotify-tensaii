@@ -54,18 +54,18 @@ nextApp.prepare().then(() => {
   app.use("/auth", authRouter);
 
   //setup authenication for graphql
-  app.use("/graphql", (req, res, next) => {
-    passport.authenticate("jwt", function(user, _, err) {
-      if (err)
-        return res.json({
-          success: false,
-          message: "Wrong Access Token"
-        });
-
-      req.user = user;
-      return next();
-    })(req, res, next);
-  });
+  // app.use("/graphql", (req, res, next) => {
+  //   passport.authenticate("jwt", function(user, _, err) {
+  //     if (err)
+  //       return res.json({
+  //         success: false,
+  //         message: "Wrong Access Token"
+  //       });
+  //
+  //     req.user = user;
+  //     return next();
+  //   })(req, res, next);
+  // });
 
   // set up dataSources for the resolvers
   const dataSources = () => ({
@@ -90,7 +90,7 @@ nextApp.prepare().then(() => {
           )
       }
     });
-    return { user: req.user, token: token.data.access_token };
+    return { user: { id: 1 }, token: token.data.access_token };
   };
 
   //Initialize and connect a graphql endpoint to express

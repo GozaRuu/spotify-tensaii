@@ -28,7 +28,7 @@ const typeDefs = gql`
 
   type ListItem {
     userId: ID!
-    AlbumSpotifyId: ID
+    album: Album
     rank: Int
     description: String
   }
