@@ -49,7 +49,7 @@ class DatabaseAPI extends DataSource {
         .orderBy("rank");
       return { success: true, list };
     } catch (err) {
-      return { success: false, message: "database error" };
+      return { success: false, message: "database error", err };
     }
   }
 }
