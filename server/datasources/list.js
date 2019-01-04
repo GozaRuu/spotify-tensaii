@@ -10,15 +10,11 @@ class ListAPI extends RESTDataSource {
     req.headers.set("Authorization", "Bearer " + this.context.token);
   }
 
-  //TODO: figure out where I want a full artist object from here or not
   albumReducer(album) {
     return {
       id: album.id || 0,
       name: album.name,
-      artists: album.artists.map(artist => ({
-        id: artist.id,
-        name: artist.name
-      })),
+      artists: album.artists.map(artist => this.artistReducer(artist)),
       release_date: album.release_date,
       total_tracks: album.total_tracks,
       images: album.images
@@ -35,13 +31,27 @@ class ListAPI extends RESTDataSource {
   }
 
   async getAlbumById({ id }) {
-    const res = await this.get(`albums/${id}`);
-    return this.albumReducer(res);
+    const album = await this.get(`albums/${id}`);
+    const artists = await this.getArtistsByIds({
+      ids: album.artists.map(artist => artist.id)
+    });
+    return this.albumReducer({ ...album, artists });
   }
 
   async getAlbumsByIds({ ids }) {
-    const res = await this.get(`albums`, { ids: ids });
-    return res.albums.map(album => this.albumReducer(album));
+    const albums = await this.get(`albums`, { ids: ids });
+    const pArtists = albums.albums.map(
+      async album =>
+        await this.getArtistsByIds({
+          ids: album.artists.map(artist => artist.id)
+        })
+    );
+
+    return Promise.all(pArtists).then(artists =>
+      albums.albums.map((album, index) =>
+        this.albumReducer({ ...album, artists: artists[index] })
+      )
+    );
   }
 
   async getArtistById({ id }) {
