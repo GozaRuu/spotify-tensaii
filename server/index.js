@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const express = require("express");
 const next = require("next");
 const { ApolloServer, gql } = require("apollo-server-express");
@@ -22,16 +20,18 @@ const resolvers = require("./resolvers");
 const SpotifyAPI = require("./datasources/spotify");
 const DatabaseAPI = require("./datasources/database");
 
+const {
+  port,
+  dev,
+  spotifyClientId,
+  spotifyClientSecret
+} = require("../lib/app.config");
+
 require("./passport.config");
 
 // Initialize knex and objection DB connection.
 const knex = Knex(knexConfig.development);
 Model.knex(knex);
-
-const port = parseInt(process.env.PORT, 10) || 4000;
-const dev = process.env.NODE_ENV !== "production";
-const spotifyClientId = process.env.SPOTIFY_API_CLIENT_ID || "";
-const spotifyClientSecret = process.env.SPOTIFY_API_CLIENT_SECRET || "";
 
 //get next app instance
 const nextApp = next({ dev });
@@ -54,18 +54,18 @@ nextApp.prepare().then(() => {
   app.use("/auth", authRouter);
 
   //setup authenication for graphql
-  // app.use("/graphql", (req, res, next) => {
-  //   passport.authenticate("jwt", function(user, _, err) {
-  //     if (err)
-  //       return res.json({
-  //         success: false,
-  //         message: "Wrong Access Token"
-  //       });
-  //
-  //     req.user = user;
-  //     return next();
-  //   })(req, res, next);
-  // });
+  app.use("/graphql", (req, res, next) => {
+    passport.authenticate("jwt", function(user, _, err) {
+      if (err)
+        return res.json({
+          success: false,
+          message: "Wrong Access Token"
+        });
+
+      req.user = user;
+      return next();
+    })(req, res, next);
+  });
 
   // set up dataSources for the resolvers
   const dataSources = () => ({

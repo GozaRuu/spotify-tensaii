@@ -3,8 +3,7 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const { User } = require("../database");
 
-require("dotenv").config();
-const JWTSecret = process.env.JWTSecret || "123";
+const { JWTSecret } = require("../lib/app.config");
 
 const getToken = user => jwt.sign(user, JWTSecret, { expiresIn: 60 * 60 * 24 });
 

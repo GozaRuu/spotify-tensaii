@@ -4,9 +4,7 @@ const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const { User } = require("../database");
 
-require("dotenv").config();
-
-const JWTSecret = process.env.JWTSecret || "123";
+const { JWTSecret } = require("../lib/app.config");
 
 passport.use(
   new LocalStrategy(
