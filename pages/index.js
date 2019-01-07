@@ -1,9 +1,10 @@
 import React from "react";
 import Link from "next/link";
 import Head from "../components/head";
+import Layout from "../components/layout";
 
 const Home = () => (
-  <div>
+  <Layout>
     <Head title="Home" />
 
     <div className="hero">
@@ -11,24 +12,15 @@ const Home = () => (
       <p className="description">
         Create your Top 10 albums of the year, of the decade, of all time
         <br />
-        Discover your most listend to music
+        Discover your most listend-to albums, songs and artists
       </p>
     </div>
 
     <style jsx>{`
-      :global(body) {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Avenir,
-          Helvetica, sans-serif;
-      }
       a {
         color: #067df7;
         text-decoration: none;
         font-size: 13px;
-      }
-      .hero {
-        width: 100%;
-        color: #333;
       }
       .title {
         margin: 0;
@@ -42,7 +34,7 @@ const Home = () => (
         text-align: center;
       }
     `}</style>
-  </div>
+  </Layout>
 );
 
 export default Home;
