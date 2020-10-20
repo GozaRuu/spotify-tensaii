@@ -46,7 +46,7 @@
     "jest": "^23.6.0",
     "jsonwebtoken": "^8.4.0",
     "knex": "^0.19.5",
-    "next": "^7.0.2",
+    "next": "^9.3.2",
     "objection": "^1.4.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
